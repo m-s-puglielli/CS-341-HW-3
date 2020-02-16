@@ -42,23 +42,44 @@ When the user clicks on the button,
 */
 function dropdown_click()
 {
-	document.getElementById("myDropdown").classList.toggle("show");
+	document.getElementById("months").classList.toggle("show");
 }
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event)
+$(document).ready(function()
 {
-	if (!event.target.matches('.dropbtn'))
+	$("#months > a").click(function()
 	{
-		var dropdowns = document.getElementsByClassName("dropdown-content");
-		var i;
-		for (i = 0; i < dropdowns.length; i++)
+		$("#month_button").text($(this).text().slice(0,3));
+		$.post('http://localhost:3000/orders', function(json_data)
 		{
-			var openDropdown = dropdowns[i];
-			if (openDropdown.classList.contains('show'))
+			console.log("flag");
+			const quantity_list = document.getElementById("quantity_list");
+			quantity_list.innerHTML = "";
+			const list = JSON.parse(json_data);
+			list.forEach(function(obj)
 			{
-				openDropdown.classList.remove('show');
+				let str = obj.quantity + " " + obj.topping;
+				let li = document.createElement("li");
+				li.appendChild(document.createTextNode(str));
+				quantity_list.appendChild(li);
+			});
+		});
+	});
+
+	// Close the dropdown if the user clicks outside of it
+	window.onclick = function(event)
+	{
+		if (! event.target.matches('.dropbtn'))
+		{
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			for (let i = 0; i < dropdowns.length; i++)
+			{
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show'))
+				{
+					openDropdown.classList.remove('show');
+				}
 			}
 		}
 	}
-}
+});
