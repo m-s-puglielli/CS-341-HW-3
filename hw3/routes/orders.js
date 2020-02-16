@@ -27,7 +27,9 @@ const data_obj_lit =
 ];
 */
 
-const data_obj_lit = dbquery.dbquery();
+//const quantities = dbquery.dbquery("select QUANTITY from ORDERS where MONTH='", "");
+
+//const data_obj_lit = ;
 
 const data_json = JSON.stringify(data_obj_lit);
 
