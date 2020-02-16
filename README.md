@@ -5,5 +5,4 @@ Maximilian Puglielli
 CS-341-B Spring-2020
 Homework #4
 
-
 Public IP Address: "34.82.169.122";
