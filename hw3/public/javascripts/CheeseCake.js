@@ -55,7 +55,6 @@ $(document).ready(function()
 		$("#month_button").text($(this).text().slice(0,3));
 		$.post('http://localhost:3000/orders', function(json_data)
 		{
-			console.log("flag");
 			const quantity_list = document.getElementById("quantity_list");
 			quantity_list.innerHTML = "";
 			const list = JSON.parse(json_data);

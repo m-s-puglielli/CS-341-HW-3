@@ -6,8 +6,10 @@ Homework #5
 */
 
 var express = require('express');
-var router = express.Router();
+var router  = express.Router();
+var dbquery = require("./dbms.js");
 
+/*
 const data_obj_lit =
 [
 	{
@@ -23,6 +25,9 @@ const data_obj_lit =
 		quantity: 3
 	}
 ];
+*/
+
+const data_obj_lit = dbquery.dbquery();
 
 const data_json = JSON.stringify(data_obj_lit);
 
