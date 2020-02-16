@@ -1,9 +1,9 @@
 /*
 Maximilian Puglielli
-02/03/2020 @ 11:55pm
+02/10/2020 @ 11:55pm
 CS-341-B Spring-2020
-Homework #3
- */
+Homework #4
+*/
 
 /*
 When the user clicks the order button:
@@ -45,6 +45,9 @@ function dropdown_click()
 	document.getElementById("months").classList.toggle("show");
 }
 
+/*
+After the DOM has rendered, define the following listeners
+*/
 $(document).ready(function()
 {
 	$("#months > a").click(function()
