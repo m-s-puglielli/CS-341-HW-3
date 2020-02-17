@@ -7,9 +7,9 @@ Homework #5
 
 var express = require('express');
 var router  = express.Router();
-var dbquery = require("./dbms.js");
+//var dbquery = require("./dbms.js");
 
-/*
+
 const data_obj_lit =
 [
 	{
@@ -25,17 +25,21 @@ const data_obj_lit =
 		quantity: 3
 	}
 ];
-*/
+
 
 //const quantities = dbquery.dbquery("select QUANTITY from ORDERS where MONTH='", "");
 
 //const data_obj_lit = ;
 
-const data_json = JSON.stringify(data_obj_lit);
+//const data_json = JSON.stringify(data_obj_lit);
 
 router.post('/', function(req, res, next)
 {
-	res.json(data_json);
+	console.log("Testing");
+	const str = req.body.text;
+	console.log(`String = ${str}`);
+//	res.json(data_json);
+	res.send(data_obj_lit);
 });
 
 module.exports = router;

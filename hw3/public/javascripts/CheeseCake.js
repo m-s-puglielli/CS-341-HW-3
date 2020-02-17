@@ -52,13 +52,20 @@ $(document).ready(function()
 {
 	$("#months > a").click(function()
 	{
-		$("#month_button").text($(this).text().slice(0,3));
-		$.post('http://localhost:3000/orders', function(json_data)
+		const str = $(this).text().slice(0,3);
+		$("#month_button").text(str);
+//		const mon_json = JSON.stringify( { mon: str} );
+		const mon_obj =
+		{
+			mon: str
+		};
+		$.post('http://localhost:3000/orders', mon_obj, function(json_data)
 		{
 			const quantity_list = document.getElementById("quantity_list");
 			quantity_list.innerHTML = "";
-			const list = JSON.parse(json_data);
-			list.forEach(function(obj)
+//			const list = JSON.parse(json_data);
+//			list.forEach(function(obj)
+			json_data.forEach(function(obj)
 			{
 				let str = obj.quantity + " " + obj.topping;
 				let li = document.createElement("li");
