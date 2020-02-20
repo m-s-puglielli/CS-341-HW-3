@@ -50,38 +50,34 @@ function order(month, topping, callback)
 				quantity += num;
 			});
 		}
-		callback(quantity);
 	});
-	return quantity;
+	callback(quantity);
 }
 
-function count_orders(month)
+function count_orders(month, callback)
 {
-	const num_plain     = order(month, "plain");
-	const num_chocolate = order(month, "chocolate");
-	const num_cherry    = order(month, "cherry");
-	rtn =
-	[
-		{
-			topping: "plain",
-			quantity: num_plain
-		},
-		{
-			topping: "chocolate",
-			quantity: num_chocolate
-		},
-		{
-			topping: "cherry",
-			quantity: num_cherry
-		}
-	];
-	return rtn;
+	let rtn = [];
+	order(month, "plain", function(num_plain)
+	{
+		rtn.push({ topping: "plain", quantity: num_plain });
+	});
+	order(month, "chocolate", function(num_chocolate)
+	{
+		rtn.push({ topping: "chocolate", quantity: num_chocolate });
+	});
+	order(month, "cherry", function(num_cherry)
+	{
+		rtn.push({ topping: "cherry", quantity: num_cherry });
+	});
+	callback(rtn);
 }
 
 router.post('/', function(req, res, next)
 {
-	const data = count_orders(req.query.month);
-	res.send(data);
+	count_orders(req.query.month, function(data)
+	{
+		res.send(data);
+	});
 });
 
 module.exports = router;
