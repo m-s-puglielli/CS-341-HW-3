@@ -52,9 +52,9 @@ $(document).ready(function()
 {
 	$("#months > a").click(function()
 	{
-		const str = $(this).text().slice(0,3);
+		let str = $(this).text().slice(0,3);
 		$("#month_button").text(str);
-
+		str = str.toUpperCase();
 		$.post('/orders?month=' + str, null, function(data)
 		{
 			const quantity_list = document.getElementById("quantity_list");

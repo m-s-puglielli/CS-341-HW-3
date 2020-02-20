@@ -33,21 +33,24 @@ function order(month, topping, callback)
 	dbquery("select QUANTITY from ORDERS where MONTH='" + month + "' and TOPPING='" + topping + "';",
 	function(err, result)
 	{
-		if (err)
+		if (err != false)
 		{
-			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery()");
+			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery() with error code: " + err);
 			return;
 		}
-		if (result === null)
+		else if (result === null)
 		{
 			console.log("ERROR: orders.js | order() - param: 'result' is null");
 			return;
 		}
-
-		result.forEach(function(num)
+		else
 		{
-			quantity += num;
-		});
+			result.forEach(function(num)
+			{
+				quantity += num;
+			});
+		}
+		callback(quantity);
 	});
 	return quantity;
 }
