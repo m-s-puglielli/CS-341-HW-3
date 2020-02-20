@@ -29,10 +29,12 @@ const data =
 
 function order(month, topping, callback)
 {
+	console.log("order: month = " + month);
 	let quantity = 0;
 	dbquery("select QUANTITY from ORDERS where MONTH='" + month + "' and TOPPING='" + topping + "';",
 	function(err, result)
 	{
+		console.log("callback function after dbquery");
 		if (err != false)
 		{
 			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery() with error code: " + err);
@@ -47,6 +49,7 @@ function order(month, topping, callback)
 		{
 			result.forEach(function(num)
 			{
+				console.log("order: num = " + num);
 				quantity += num;
 			});
 		}
@@ -56,17 +59,21 @@ function order(month, topping, callback)
 
 function count_orders(month, callback)
 {
+	console.log("count_orders: month = " + month);
 	let rtn = [];
 	order(month, "plain", function(num_plain)
 	{
+		console.log("count_orders: num_plain = " + num_plain);
 		rtn.push({ topping: "plain", quantity: num_plain });
 	});
 	order(month, "chocolate", function(num_chocolate)
 	{
+		console.log("count_orders: num_chocolate = " + num_chocolate);
 		rtn.push({ topping: "chocolate", quantity: num_chocolate });
 	});
 	order(month, "cherry", function(num_cherry)
 	{
+		console.log("count_orders: num_cherry = " + num_cherry);
 		rtn.push({ topping: "cherry", quantity: num_cherry });
 	});
 	callback(rtn);
@@ -74,8 +81,10 @@ function count_orders(month, callback)
 
 router.post('/', function(req, res, next)
 {
+	console.log("router.post: month = " + req.query.month);
 	count_orders(req.query.month, function(data)
 	{
+		console.log("router.post: data = " + data);
 		res.send(data);
 	});
 });
