@@ -75,10 +75,9 @@ function count_orders(month)
 	return rtn;
 }
 
-
 router.post('/', function(req, res, next)
 {
-	const data = count_orders("<month>");
+	const data = count_orders(req.query.month);
 	res.send(data);
 });
 
