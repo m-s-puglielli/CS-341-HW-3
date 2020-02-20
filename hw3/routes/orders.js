@@ -7,15 +7,11 @@ Homework #5
 
 var express = require('express');
 var router  = express.Router();
-//var dbquery = require("./dbms.js");
+var dbquery = require('./dbms');
 
-
-const data_obj_lit =
+/*
+const data =
 [
-	{
-		topping:  "cherry",
-		quantity: 2
-	},
 	{
 		topping:  "plain",
 		quantity: 6
@@ -23,23 +19,67 @@ const data_obj_lit =
 	{
 		topping:  "chocolate",
 		quantity: 3
+	},
+	{
+		topping:  "cherry",
+		quantity: 2
 	}
 ];
+*/
 
+function order(month, topping, callback)
+{
+	let quantity = 0;
+	dbquery("select QUANTITY from ORDERS where MONTH='" + month + "' and TOPPING='" + topping + "';",
+	function(err, result)
+	{
+		if (err)
+		{
+			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery()");
+			return;
+		}
+		if (result === null)
+		{
+			console.log("ERROR: orders.js | order() - param: 'result' is null");
+			return;
+		}
 
-//const quantities = dbquery.dbquery("select QUANTITY from ORDERS where MONTH='", "");
+		result.forEach(function(num)
+		{
+			quantity += num;
+		});
+	});
+	return quantity;
+}
 
-//const data_obj_lit = ;
+function count_orders(month)
+{
+	const num_plain     = order(month, "plain");
+	const num_chocolate = order(month, "chocolate");
+	const num_cherry    = order(month, "cherry");
+	rtn =
+	[
+		{
+			topping: "plain",
+			quantity: num_plain
+		},
+		{
+			topping: "chocolate",
+			quantity: num_chocolate
+		},
+		{
+			topping: "cherry",
+			quantity: num_cherry
+		}
+	];
+	return rtn;
+}
 
-//const data_json = JSON.stringify(data_obj_lit);
 
 router.post('/', function(req, res, next)
 {
-	console.log("Testing");
-	const str = req.body.text;
-	console.log(`String = ${str}`);
-//	res.json(data_json);
-	res.send(data_obj_lit);
+	const data = count_orders("<month>");
+	res.send(data);
 });
 
 module.exports = router;
