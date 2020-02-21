@@ -1,15 +1,15 @@
 /**
-Maximilian Puglielli
-02/17/2020 @ 11:55pm
-CS-341-B Spring-2020
-Homework #5
-**/
+ * Maximilian Puglielli
+ * 02/17/2020 @ 11:55pm
+ * CS-341-B Spring-2020
+ * Homework #5
+ */
 
 /**
-dbms.js
-This file contains functions for accessing the MySQL database,
-which contains the Cheesecake order data.
-**/
+ * dbms.js
+ * This file contains functions for accessing the MySQL database,
+ * which contains the Cheesecake order data.
+ */
 
 exports.version = '0.0.1';
 
@@ -22,14 +22,14 @@ var user     = "root";            // username (change to match your db)
 var password = "0112358";         // password (change to match your db, yes this is very poor practice)
 
 /**
-dbquery
-performs a given SQL query on the database and returns the results
-to the caller
-@param query      the SQL query to perform (e.g., "SELECT * FROM ...")
-@param callback   the callback function to call with two values
-                      error   - (or 'false' if none)
-                      results - as given by the mysql client
-**/
+ * dbquery
+ * performs a given SQL query on the database and returns the results
+ * to the caller
+ * @param {string} query        the SQL query to perform (e.g., "SELECT * FROM ...")
+ * @param {function} callback   the callback function to call with two values
+ *                                  error   - (or 'false' if none)
+ *                                  results - as given by the mysql client
+ */
 exports.dbquery = function(query_str, callback)
 {
 	var dbclient;
@@ -37,7 +37,7 @@ exports.dbquery = function(query_str, callback)
 
 	async.waterfall
 	([
-		//Step 1: Connect to the database
+		// Step 1: Connect to the database
 		function (callback)
 		{
 			console.log("\n*** creating connection ***");
@@ -52,14 +52,14 @@ exports.dbquery = function(query_str, callback)
 			dbclient.connect(callback);
 		},
 
-		//Step 2: Issue query
+		// Step 2: Issue query
 		function (results, callback)
 		{
 			console.log("\n*** retrieving data ***");
 			dbclient.query(query_str, callback);
 		},
 
-		//Step 3: Collect results
+		// Step 3: Collect results
 		function (rows, fields, callback)
 		{
 			console.log("\n*** dumping data: ");
@@ -85,7 +85,7 @@ exports.dbquery = function(query_str, callback)
 			callback(false, results);
 		}
 
-		//close connection to database
+		// close connection to database
 		dbclient.end();
 	});
-}//function dbquery
+}

@@ -1,9 +1,9 @@
-/*
-Maximilian Puglielli
-02/10/2020 @ 11:55pm
-CS-341-B Spring-2020
-Homework #4
-*/
+/**
+ * Maximilian Puglielli
+ * 02/10/2020 @ 11:55pm
+ * CS-341-B Spring-2020
+ * Homework #4
+ */
 
 var createError =  require('http-errors');
 var express =      require('express');

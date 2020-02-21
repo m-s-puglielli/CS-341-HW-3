@@ -1,18 +1,18 @@
 /**
-Maximilian Puglielli
-02/17/2020 @ 11:55pm
-CS-341-B Spring-2020
-Homework #5
-**/
+ * Maximilian Puglielli
+ * 02/17/2020 @ 11:55pm
+ * CS-341-B Spring-2020
+ * Homework #5
+ */
 
 /*
-When the user clicks the order button:
-	if the word 'vegan' in any case is mentioned:
-		send an alert() saying disclaiming that cheesecake contains dairy
-	otherwise:
-		delete the textarea and button elements,
-		and add an element saying "Thany You! Your order has been placed"
-*/
+ * When the user clicks the order button:
+ *     if the word 'vegan' in any case is mentioned:
+ *         send an alert() saying disclaiming that cheesecake contains dairy
+ *     otherwise:
+ *         delete the textarea and button elements,
+ *         and add an element saying "Thany You! Your order has been placed"
+ */
 function order_click()
 {
 	var text = $.trim($("#order_textarea").val());
@@ -36,18 +36,18 @@ function order_click()
 	}
 }
 
-/*
-When the user clicks on the button,
-	toggle between hiding and showing the dropdown content
-*/
+/**
+ * When the user clicks on the button,
+ *     toggle between hiding and showing the dropdown content
+ */
 function dropdown_click()
 {
 	document.getElementById("months").classList.toggle("show");
 }
 
-/*
-After the DOM has rendered, define the following listeners
-*/
+/**
+ * After the DOM has rendered, define the following listeners
+ */
 $(document).ready(function()
 {
 	$("#months > a").click(function()

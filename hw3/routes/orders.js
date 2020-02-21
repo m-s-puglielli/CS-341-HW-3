@@ -1,14 +1,24 @@
 /**
-Maximilian Puglielli
-02/17/2020 @ 11:55pm
-CS-341-B Spring-2020
-Homework #5
-**/
+ * Maximilian Puglielli
+ * 02/17/2020 @ 11:55pm
+ * CS-341-B Spring-2020
+ * Homework #5
+ */
 
 var express = require('express');
 var router  = express.Router();
+
+// Import the database javascript file
 var dbms    = require('./dbms');
 
+
+/**
+ * This function querys the database, and pulls the number of orders for a given month and topping
+ *
+ * @param {string} month
+ * @param {string} topping
+ * @param {function} callback
+ */
 function order(month, topping, callback)
 {
 	console.log("order: month = " + month);
@@ -43,6 +53,12 @@ function order(month, topping, callback)
 	});
 }
 
+/**
+ * This function calls order() three times, once for each topping, for a given month
+ *
+ * @param {string} month
+ * @param {function} callback
+ */
 function count_orders(month, callback)
 {
 	console.log("count_orders: month = " + month);
@@ -67,6 +83,9 @@ function count_orders(month, callback)
 	});
 }
 
+/**
+ * This is the post function-call to send the data to the client
+ */
 router.post('/', function(req, res, next)
 {
 	console.log("router.post: month = " + req.query.month);
