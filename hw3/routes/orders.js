@@ -7,32 +7,15 @@ Homework #5
 
 var express = require('express');
 var router  = express.Router();
-var dbquery = require('./dbms');
-
-/*
-const data =
-[
-	{
-		topping:  "plain",
-		quantity: 6
-	},
-	{
-		topping:  "chocolate",
-		quantity: 3
-	},
-	{
-		topping:  "cherry",
-		quantity: 2
-	}
-];
-*/
+var dbms    = require('./dbms');
 
 function order(month, topping, callback)
 {
 	console.log("order: month = " + month);
 	let quantity = 0;
-	dbquery("select QUANTITY from ORDERS where MONTH='" + month + "' and TOPPING='" + topping + "';",
-	function(err, result)
+	const query = `select QUANTITY from ORDERS where MONTH=\'${month}\' and TOPPING=\'${topping}\'`;
+	console.log("order: query = " + query);
+	dbms.dbquery(query, function(err, result)
 	{
 		console.log("callback function after dbquery");
 		if (err != false)
@@ -47,14 +30,17 @@ function order(month, topping, callback)
 		}
 		else
 		{
-			result.forEach(function(num)
+			result.forEach(function(obj)
 			{
-				console.log("order: num = " + num);
-				quantity += num;
+				console.log("order: obj =");
+				console.log(obj);
+				console.log("order: obj.QUANTITY = " + obj.QUANTITY);
+				quantity += obj.QUANTITY;
 			});
+			console.log("quantity = " + quantity);
 		}
+		callback(quantity);
 	});
-	callback(quantity);
 }
 
 function count_orders(month, callback)
@@ -65,18 +51,20 @@ function count_orders(month, callback)
 	{
 		console.log("count_orders: num_plain = " + num_plain);
 		rtn.push({ topping: "plain", quantity: num_plain });
+		order(month, "chocolate", function(num_chocolate)
+		{
+			console.log("count_orders: num_chocolate = " + num_chocolate);
+			rtn.push({ topping: "chocolate", quantity: num_chocolate });
+			order(month, "cherry", function(num_cherry)
+			{
+				console.log("count_orders: num_cherry = " + num_cherry);
+				rtn.push({ topping: "cherry", quantity: num_cherry });
+				console.log("count_orders: rtn =")
+				console.log(rtn);
+				callback(rtn);
+			});
+		});
 	});
-	order(month, "chocolate", function(num_chocolate)
-	{
-		console.log("count_orders: num_chocolate = " + num_chocolate);
-		rtn.push({ topping: "chocolate", quantity: num_chocolate });
-	});
-	order(month, "cherry", function(num_cherry)
-	{
-		console.log("count_orders: num_cherry = " + num_cherry);
-		rtn.push({ topping: "cherry", quantity: num_cherry });
-	});
-	callback(rtn);
 }
 
 router.post('/', function(req, res, next)
@@ -84,9 +72,11 @@ router.post('/', function(req, res, next)
 	console.log("router.post: month = " + req.query.month);
 	count_orders(req.query.month, function(data)
 	{
-		console.log("router.post: data = " + data);
+		console.log("router.post: data =");
+		console.log(data);
 		res.send(data);
 	});
+	console.log("\n\n\n");
 });
 
 module.exports = router;
