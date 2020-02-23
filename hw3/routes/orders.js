@@ -14,37 +14,6 @@ var dbms    = require('./dbms');
 
 
 /**
- *
- * @param {int} quantity
- * @param {string} topping
- * @param {function} callback
- */
-function submit_order(quantity, topping)
-{
-	console.log("submit_order: quantity = " + quantity);
-	console.log("submit_order: topping = "  + topping);
-	const query = `select QUANTITY from ORDERS where MONTH=\'${month}\' and TOPPING=\'${topping}\'`;
-	const query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${62}, "Sep", 27, 2, "cherry", "I WANTED CHEESECAKE FOR MY BIRTHDAY")`
-	dbms.dbquery(query,
-	function(err, result)
-	{
-		console.log("callback function after dbquery");
-		if (err != false)
-		{
-			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery() with error code: " + err);
-		}
-		else if (result === null)
-		{
-			console.log("ERROR: orders.js | order() - param: 'result' is null");
-		}
-		else
-		{
-			;
-		}
-	});
-}
-
-/**
  * This function querys the database, and pulls the number of orders for a given month and topping
  *
  * @param {string} month
@@ -118,38 +87,20 @@ function count_orders(month, callback)
 	});
 }
 
-// /**
-//  * This is the post function-call to retrieve data from the client
-//  */
-// router.post('/', function(req, res)
-// {
-// });
-
 /**
  * This is the post function's call to send the data to the client
  */
 router.post('/', function(req, res)
 {
-	if (req.query.type === "ask")
+	console.log("router.post: month = " + req.query.month);
+	count_orders(req.query.month,
+	function(data)
 	{
-		console.log("router.post: type = " + req.query.type);
-		console.log("router.post: month = " + req.query.month);
-		count_orders(req.query.month,
-		function(data)
-		{
-			console.log("router.post: data =");
-			console.log(data);
-			res.send(data);
-		});
-		console.log("\n\n\n");
-	}
-	else if (req.query.type === "order")
-	{
-		console.log("router.post: type = " + req.query.type);
-		console.log("router.post: quantity = " + req.query.quantity + " topping = " + req.query.topping);
-		submit_order(parseInt(req.query.quantity, 10), req.query.topping);
-		console.log("\n\n\n");
-	}
+		console.log("router.post: data =");
+		console.log(data);
+		res.send(data);
+	});
+	console.log("\n\n\n");
 });
 
 module.exports = router;

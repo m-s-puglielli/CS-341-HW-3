@@ -57,8 +57,9 @@ $(document).ready(function()
 		topping = document.getElementById("plain").checked ? "plain" : topping;
 		topping = document.getElementById("chocolate").checked ? "chocolate" : topping;
 		topping = document.getElementById("cherry").checked ? "cherry" : topping;
+		const notes = document.getElementById("order_textarea").value;
 
-		$.post('/neworders?type=order&quantity=' + quantity + '&topping=' + topping,
+		$.post('/neworders', {"quantity": quantity, "topping": topping, "notes": notes},
 		function()
 		{
 			console.log("SUCCESS");
@@ -70,7 +71,7 @@ $(document).ready(function()
 		let str = $(this).text().slice(0,3);
 		$("#month_button").text(str);
 		str = str.toUpperCase();
-		$.post('/orders?type=ask&month=' + str, null,
+		$.post('/orders?month=' + str, null,
 		function(data)
 		{
 			const quantity_list = document.getElementById("quantity_list");
