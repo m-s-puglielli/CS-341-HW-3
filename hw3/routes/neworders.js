@@ -14,6 +14,7 @@ var dbms    = require('./dbms');
 
 
 /**
+ * This function
  *
  * @param {int}      quantity
  * @param {string}   topping
@@ -22,13 +23,6 @@ var dbms    = require('./dbms');
  */
 function submit_order(quantity, topping, notes, callback)
 {
-	/*
-	1st query:
-		`select count(*) from ORDERS`
-		`id = results[0]["count(*)"] or "COUNT(*)"
-	2nd query:
-		`insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, '${month}', ${day}, ${quantity}, '${topping}', '${notes}')`
-	*/
 	console.log("submit_order: quantity = " + quantity);
 	console.log("submit_order: topping = "  + topping);
 	console.log("submit_order: notes = " + notes);
@@ -47,8 +41,8 @@ function submit_order(quantity, topping, notes, callback)
 		}
 		else
 		{
-			const id = results[0]["COUNT(*)"];
-			let query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, 'September', 27, ${quantity}, '${topping}', '${notes}')`;
+			const id = result[0]["count(*)"];
+			let query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, 'Sep', 27, ${quantity}, '${topping}', '${notes}')`;
 			dbms.dbquery(query,
 			function(err, result)
 			{
@@ -65,6 +59,7 @@ function submit_order(quantity, topping, notes, callback)
 				{
 					console.log("submit_order: result =");
 					console.log(result);
+					callback();
 				}
 			});
 		}
@@ -72,7 +67,7 @@ function submit_order(quantity, topping, notes, callback)
 }
 
 /**
- * This is the post function's call to send the data to the client
+ * This is the post function's call to submit the clients order
  */
 router.post('/', function(req, res)
 {
