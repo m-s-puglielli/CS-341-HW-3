@@ -42,7 +42,7 @@ function submit_order(quantity, topping, notes, callback)
 		else
 		{
 			const id = result[0]["count(*)"];
-			let query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, 'Sep', 27, ${quantity}, '${topping}', '${notes}')`;
+			let query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, 'SEP', 27, ${quantity}, '${topping}', '${notes}')`;
 			dbms.dbquery(query,
 			function(err, result)
 			{
