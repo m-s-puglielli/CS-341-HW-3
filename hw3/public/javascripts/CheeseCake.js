@@ -23,13 +23,13 @@ function order_click()
 	}
 	else
 	{
-		var order_textarea_element = document.getElementById("order_textarea");
-		var order_button_element   = document.getElementById("order_button");
+		const order_textarea_element = document.getElementById("order_textarea");
+		const order_button_element   = document.getElementById("order_button");
 		order_textarea_element.parentNode.removeChild(order_textarea_element);
 		order_button_element  .parentNode.removeChild(order_button_element);
 
-		var parent = document.getElementById("order_form");
-		var new_element = document.createElement("p");
+		const parent = document.getElementById("order_form");
+		const new_element = document.createElement("p");
 		new_element.setAttribute('id', "order_response");
 		new_element.innerHTML = "Thank you! Your order has been placed";
 		parent.appendChild(new_element);
@@ -50,12 +50,28 @@ function dropdown_click()
  */
 $(document).ready(function()
 {
+	$("#order_button").click(function()
+	{
+		const quantity = document.getElementById("quantity_selector").value;
+		let topping;
+		topping = document.getElementById("plain").checked ? "plain" : topping;
+		topping = document.getElementById("chocolate").checked ? "chocolate" : topping;
+		topping = document.getElementById("cherry").checked ? "cherry" : topping;
+
+		$.post('/neworders?type=order&quantity=' + quantity + '&topping=' + topping,
+		function()
+		{
+			console.log("SUCCESS");
+		});
+	});
+
 	$("#months > a").click(function()
 	{
 		let str = $(this).text().slice(0,3);
 		$("#month_button").text(str);
 		str = str.toUpperCase();
-		$.post('/orders?month=' + str, null, function(data)
+		$.post('/orders?type=ask&month=' + str, null,
+		function(data)
 		{
 			const quantity_list = document.getElementById("quantity_list");
 			quantity_list.innerHTML = "";
