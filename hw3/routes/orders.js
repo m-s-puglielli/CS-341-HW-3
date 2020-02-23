@@ -24,7 +24,7 @@ function submit_order(quantity, topping)
 	console.log("submit_order: quantity = " + quantity);
 	console.log("submit_order: topping = "  + topping);
 	const query = `select QUANTITY from ORDERS where MONTH=\'${month}\' and TOPPING=\'${topping}\'`;
-	const query = ;
+	const query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${62}, "Sep", 27, 2, "cherry", "I WANTED CHEESECAKE FOR MY BIRTHDAY")`
 	dbms.dbquery(query,
 	function(err, result)
 	{
