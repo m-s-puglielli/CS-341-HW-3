@@ -16,8 +16,8 @@ var dbms    = require('./dbms');
 /**
  * This function querys the database, and pulls the number of orders for a given month and topping
  *
- * @param {string} month
- * @param {string} topping
+ * @param {string}   month
+ * @param {string}   topping
  * @param {function} callback
  */
 function order(month, topping, callback)
@@ -29,7 +29,6 @@ function order(month, topping, callback)
 	dbms.dbquery(query,
 	function(err, result)
 	{
-		console.log("callback function after dbquery");
 		if (err != false)
 		{
 			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery() with error code: " + err);
@@ -57,7 +56,7 @@ function order(month, topping, callback)
 /**
  * This function calls order() three times, once for each topping, for a given month
  *
- * @param {string} month
+ * @param {string}   month
  * @param {function} callback
  */
 function count_orders(month, callback)

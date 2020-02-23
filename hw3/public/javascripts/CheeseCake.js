@@ -13,6 +13,7 @@
  *         delete the textarea and button elements,
  *         and add an element saying "Thany You! Your order has been placed"
  */
+/*
 function order_click()
 {
 	var text = $.trim($("#order_textarea").val());
@@ -35,6 +36,7 @@ function order_click()
 		parent.appendChild(new_element);
 	}
 }
+*/
 
 /**
  * When the user clicks on the button,
@@ -50,23 +52,41 @@ function dropdown_click()
  */
 $(document).ready(function()
 {
-	$("#order_button").click(function()
+	$("#order_button").click(
+	function()
 	{
+		console.log("FLAG 1");
 		const quantity = document.getElementById("quantity_selector").value;
 		let topping;
 		topping = document.getElementById("plain").checked ? "plain" : topping;
 		topping = document.getElementById("chocolate").checked ? "chocolate" : topping;
 		topping = document.getElementById("cherry").checked ? "cherry" : topping;
-		const notes = document.getElementById("order_textarea").value;
-
+		const notes = $.trim($("#order_textarea").val());
+		if (notes.toLowerCase().includes("vegan"))
+		{
+			alert("WARNING: Cheesecake contains dairy!");
+		}
+		else
+		{
+			const order_textarea_element = document.getElementById("order_textarea");
+			const order_button_element   = document.getElementById("order_button");
+			order_textarea_element.parentNode.removeChild(order_textarea_element);
+			order_button_element  .parentNode.removeChild(order_button_element);
+			const parent = document.getElementById("order_form");
+			const new_element = document.createElement("p");
+			new_element.setAttribute('id', "order_response");
+			new_element.innerHTML = "Thank you! Your order has been placed";
+			parent.appendChild(new_element);
+		}
 		$.post('/neworders', {"quantity": quantity, "topping": topping, "notes": notes},
 		function()
 		{
-			console.log("SUCCESS");
+			console.log("post was successful");
 		});
 	});
 
-	$("#months > a").click(function()
+	$("#months > a").click(
+	function()
 	{
 		let str = $(this).text().slice(0,3);
 		$("#month_button").text(str);
@@ -87,7 +107,8 @@ $(document).ready(function()
 	});
 
 	// Close the dropdown if the user clicks outside of it
-	window.onclick = function(event)
+	window.onclick =
+	function(event)
 	{
 		if (! event.target.matches('.dropbtn'))
 		{

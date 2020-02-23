@@ -15,11 +15,12 @@ var dbms    = require('./dbms');
 
 /**
  *
- * @param {int} quantity
- * @param {string} topping
+ * @param {int}      quantity
+ * @param {string}   topping
+ * @param {string}   notes
  * @param {function} callback
  */
-function submit_order(quantity, topping)
+function submit_order(quantity, topping, notes, callback)
 {
 	/*
 	1st query:
@@ -30,23 +31,42 @@ function submit_order(quantity, topping)
 	*/
 	console.log("submit_order: quantity = " + quantity);
 	console.log("submit_order: topping = "  + topping);
-	const query = `select QUANTITY from ORDERS where MONTH=\'${month}\' and TOPPING=\'${topping}\'`;
-	const query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${62}, "Sep", 27, 2, "cherry", "I WANTED CHEESECAKE FOR MY BIRTHDAY")`
+	console.log("submit_order: notes = " + notes);
+	let query = `select count(*) from ORDERS`;
 	dbms.dbquery(query,
 	function(err, result)
 	{
-		console.log("callback function after dbquery");
+		console.log("First Query's callback");
 		if (err != false)
 		{
-			console.log("ERROR: orders.js | order() - Error connecting to database with dbquery() with error code: " + err);
+			console.log("ERROR: neworders.js | submit_order() - Error connecting to database with dbquery() with error code: " + err);
 		}
 		else if (result === null)
 		{
-			console.log("ERROR: orders.js | order() - param: 'result' is null");
+			console.log("ERROR: neworders.js | submit_order() - param: 'result' is null");
 		}
 		else
 		{
-			;
+			const id = results[0]["COUNT(*)"];
+			let query = `insert into ORDERS (ORDERID, MONTH, DAY, QUANTITY, TOPPING, NOTES) values (${id}, 'September', 27, ${quantity}, '${topping}', '${notes}')`;
+			dbms.dbquery(query,
+			function(err, result)
+			{
+				console.log("Nested Query's callback")
+				if (err != false)
+				{
+					console.log("ERROR: neworders.js | submit_order() - Error connecting to database with dbquery() with error code: " + err);
+				}
+				else if (result === null)
+				{
+					console.log("ERROR: neworders.js | submit_order() - param: 'result' is null");
+				}
+				else
+				{
+					console.log("submit_order: result =");
+					console.log(result);
+				}
+			});
 		}
 	});
 }
@@ -56,11 +76,15 @@ function submit_order(quantity, topping)
  */
 router.post('/', function(req, res)
 {
-	const body = req.body;
-	const quantity = body.quantity;
-	const topping = body.topping;
-	const notes = body.notes;
-	submit_order(parseInt(req.query.quantity, 10), req.query.topping);
+	const quantity = req.body.quantity;
+	const topping  = req.body.topping;
+	const notes    = req.body.notes;
+	submit_order(parseInt(quantity, 10), topping, notes,
+	function()
+	{
+		console.log("submit_orders was successful")
+	});
+	res.send();
 	console.log("\n\n\n");
 });
 
