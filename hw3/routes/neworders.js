@@ -14,7 +14,7 @@ var dbms    = require('./dbms');
 
 
 /**
- * This function
+ * This function querys the database and submits the clients order
  *
  * @param {int}      quantity
  * @param {string}   topping
